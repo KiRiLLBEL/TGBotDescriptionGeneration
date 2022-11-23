@@ -1,0 +1,4 @@
+aiogram
+pika
+aio_pika
+asyncio

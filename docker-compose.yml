@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+    rabbit:
+        image: rabbitmq:3-management-alpine
+        container_name: "rabbitmq"
+        environment:
+            - RABBITMQ_DEFAULT_USER=rabbit
+            - RABBITMQ_DEFAULT_PASS=mypassword
+        ports:
+            - 5672:5672
+            - 15672:15672
+        networks:
+            - rabbit_net
+    bot:
+        build: bot/
+        command: python ./bot.py
+        environment:
+            AMQP_URL: 'amqp://rabbit:mypassword@host.docker.internal:5672'
+        ports:
+            - 1234:1234
+        depends_on:
+            - rabbit
+        networks:
+            - rabbit_net
+
+    server:
+        build: server/
+        command: python ./consumer.py
+        depends_on:
+            - rabbit
+            - bot
+        environment:
+            AMQP_URL: 'amqp://rabbit:mypassword@host.docker.internal:5672'
+        networks:
+            - rabbit_net
+networks:
+    rabbit_net:
+        driver: bridge

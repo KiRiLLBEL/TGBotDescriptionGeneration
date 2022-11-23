@@ -1,0 +1,5 @@
+pika
+aio_pika
+asyncio
+transformers
+torch
