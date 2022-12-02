@@ -4,7 +4,6 @@
 ## Bot
 [bot](/bot)
 
-Для генерации используется модель ru GPT-3 Large
 - [main](/bot/app.py)
 - [client](/bot/client.py)
 - [handler](/bot/handler.py)
@@ -18,7 +17,7 @@
 ## Server
 [server](/server)
 
-- [generate](/server/generate.py) генерация текста моделью для ответа пользователю
+- [generate](/server/generate.py) генерация моделью текста для ответа пользователю. Используется модель ru GPT-3 Large
 - [server](server/server.py) сервер
 
 ## Архитектура 
