@@ -20,7 +20,7 @@
 - [generate](/server/generate.py) генерация моделью текста для ответа пользователю. Используется модель ru GPT-3 Large
 - [server](server/server.py) сервер
 
-##Secrets
+## Secrets
 
 - Token: `kubectl create secret generic bot-auth \
     --from-literal=password='<Token>'`
