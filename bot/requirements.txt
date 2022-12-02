@@ -1,4 +1,5 @@
 aiogram
-pika
 aio_pika
 asyncio
+aioredis
+redis

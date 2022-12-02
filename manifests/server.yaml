@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  labels:
+    app: server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+        - name: server
+          image: oop-server:latest
+          imagePullPolicy: Never
+          env:
+            - name: SECRET_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: rabbit-default-user
+                  key: username
+                  optional: false
+            - name: SECRET_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbit-default-user
+                  key: password
+                  optional: false
+            - name: AMQP_URL 
+              value: 'amqp://$(SECRET_USERNAME):$(SECRET_PASSWORD)@rabbit:5672/?name=Server%20connection'
+      restartPolicy: Always

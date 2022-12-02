@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: bd
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: bd
+  template:
+    metadata:
+      labels:
+        app: bd
+    spec:
+      containers:
+        - name: redis
+          image: redis:6.2-alpine
+          env:
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: redis-auth
+                key: password
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+          - mountPath: /redis-master-data
+            name: data
+          command:
+            - redis-server
+          args:
+          - --requirepass
+          - $(REDIS_PASSWORD)
+      volumes:
+      - name: data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+spec:
+  selector:
+    app: bd
+  ports:
+  - port: 6379
+    targetPort: 6379

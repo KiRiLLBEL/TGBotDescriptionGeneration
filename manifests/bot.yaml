@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bot
+  labels:
+    app: bot
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: bot
+  template:
+    metadata:
+      labels:
+        app: bot
+    spec:
+      containers:
+        - name: bot
+          image: oop-bot:latest
+          imagePullPolicy: Never
+          env:
+            - name: SECRET_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: rabbit-default-user
+                  key: username
+                  optional: false
+            - name: SECRET_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbit-default-user
+                  key: password
+                  optional: false
+            - name: AMQP_URL
+              value: "amqp://$(SECRET_USERNAME):$(SECRET_PASSWORD)@rabbit:5672/?name=Bot%20connection"
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: bot-auth
+                  key: password
+                  optional: false
+            - name: REDIS_HOST
+              value: redis-service
+            - name: REDIS_PORT
+              value: '6379'
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-auth
+                  key: password
+                  optional: false
+      restartPolicy: Always

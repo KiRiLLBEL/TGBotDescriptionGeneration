@@ -6,4 +6,5 @@ COPY . /bot/
 # install dependencies
 RUN pip install -r ./requirements.txt
 # run app
-CMD ["python", "bot.py"]
+RUN 
+CMD ["python", "app.py"]
