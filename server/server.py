@@ -8,12 +8,13 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from generate import generateDescription
 from aio_pika import Message, connect
 from aio_pika.abc import AbstractIncomingMessage
-tokenizer = AutoTokenizer.from_pretrained("MovieDescriptionGen")
-model = AutoModelForCausalLM.from_pretrained("MovieDescriptionGen")
 
 logging.basicConfig(level=logging.INFO)
 
-async def main() -> None:
+tokenizer = AutoTokenizer.from_pretrained("KiRiLLBEl/MovieDescriptionGen", cache_dir="/model")
+model = AutoModelForCausalLM.from_pretrained("KiRiLLBEl/MovieDescriptionGen", cache_dir="/model")
+
+async def main(model, tokenizer) -> None:
     try:
         connection = await connect(os.environ['AMQP_URL'], channel_number=2,)
     except Exception:

@@ -6,8 +6,6 @@ metadata:
     app: server
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       app: server
@@ -16,10 +14,17 @@ spec:
       labels:
         app: server
     spec:
+      volumes:
+        - name: task-pv-storage
+          persistentVolumeClaim:
+            claimName: task-pv-claim
       containers:
         - name: server
           image: oop-server:latest
           imagePullPolicy: Never
+          volumeMounts:
+            - mountPath: /model
+              name: task-pv-storage
           env:
             - name: SECRET_USERNAME
               valueFrom:
@@ -35,4 +40,3 @@ spec:
                   optional: false
             - name: AMQP_URL 
               value: 'amqp://$(SECRET_USERNAME):$(SECRET_PASSWORD)@rabbit:5672/?name=Server%20connection'
-      restartPolicy: Always

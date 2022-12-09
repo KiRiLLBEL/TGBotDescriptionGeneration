@@ -5,6 +5,5 @@ WORKDIR /bot/
 COPY . /bot/
 # install dependencies
 RUN pip install -r ./requirements.txt
-# run app
-RUN 
+# run appё
 CMD ["python", "app.py"]
