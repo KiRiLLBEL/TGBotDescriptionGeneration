@@ -8,6 +8,7 @@ from aio_pika import Message, connect
 from aio_pika.abc import (
     AbstractChannel, AbstractConnection, AbstractIncomingMessage, AbstractQueue,
 )
+
 class MyRpcClient:
     connection: AbstractConnection
     channel: AbstractChannel
@@ -19,6 +20,7 @@ class MyRpcClient:
         self.loop = asyncio.get_running_loop()
 
     async def connect(self) -> "MyRpcClient":
+        """Установка соединения с RabbitMQ, создание очереди для получения запросов. Начать слушать очередь"""
         self.connection = await connect(
             os.environ['AMQP_URL'], loop=self.loop, channel_number=1,
         )
@@ -28,6 +30,7 @@ class MyRpcClient:
         return self
 
     async def on_response(self, message: AbstractIncomingMessage) -> None:
+        """Callback. Действие на возврат ответа message от сервера"""
         if message.correlation_id is None:
             print(f"Bad message {message!r}")
             return
@@ -40,6 +43,7 @@ class MyRpcClient:
         await message.ack()
 
     async def call(self, text: str, id: int) -> int:
+        """Создать запрос к очереди. Передать id пользователя и его сообщение - text в формате json"""
         correlation_id = str(uuid.uuid4())
         future = self.loop.create_future()
         params = {

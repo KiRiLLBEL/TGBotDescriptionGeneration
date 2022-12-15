@@ -13,6 +13,7 @@ from handler import HandlerMessages
 logging.basicConfig(level=logging.INFO)
 
 async def prepare(sendler: MyRpcClient) -> Dispatcher:
+    """Создание и конфигурация бота, подключение к RabbitMQ"""
     storage = RedisStorage2(host=os.environ['REDIS_HOST'], db=5, port=os.environ['REDIS_PORT'], password=os.environ['REDIS_PASSWORD'])
     bot = Bot(os.environ['TOKEN'])
     me = await bot.get_me()
@@ -22,8 +23,11 @@ async def prepare(sendler: MyRpcClient) -> Dispatcher:
     return dp
 
 async def main() -> None:
+    # Установка соединения с RabbitMQ
     sendler = await MyRpcClient().connect()
+    # Создание dispatcher
     dp = await prepare(sendler)
+    # Запуск бота
     await dp.start_polling()
 
 if __name__ == '__main__':

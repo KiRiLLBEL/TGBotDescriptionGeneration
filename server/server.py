@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 tokenizer = AutoTokenizer.from_pretrained("KiRiLLBEl/MovieDescriptionGen", cache_dir="/model")
 model = AutoModelForCausalLM.from_pretrained("KiRiLLBEl/MovieDescriptionGen", cache_dir="/model")
 
-async def main(model, tokenizer) -> None:
+async def main() -> None:
     try:
         connection = await connect(os.environ['AMQP_URL'], channel_number=2,)
     except Exception:
@@ -34,7 +34,6 @@ async def main(model, tokenizer) -> None:
             try:
                 async with message.process(requeue=True):
                     assert message.reply_to is not None
-                    
                     inputJson = message.body.decode("UTF-8")
                     inputMessage = json.loads(inputJson)
                     outputText = generateDescription(inputMessage['text'], model, tokenizer)

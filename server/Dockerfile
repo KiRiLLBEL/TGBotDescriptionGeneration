@@ -3,7 +3,9 @@ FROM python:3.8
 # copy project
 WORKDIR /server/
 # copy project
-COPY . /server/
-# install dependencies
+
+ADD ./requirements.txt /server/requirements.txt
 RUN pip install -r ./requirements.txt
+
+ADD . /server/
 CMD ["python", "server.py"]

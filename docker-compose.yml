@@ -37,7 +37,6 @@ services:
         build: bot/
         command: python ./app.py
         environment:
-        # TODO change TOKEN
             AMQP_URL: 'amqp://guest:guest@rabbit:5672/?name=Bot%20connection'
             TOKEN: ''
             REDIS_HOST: redis

@@ -2,8 +2,8 @@ FROM python:3.8
 # set work directory
 WORKDIR /bot/
 # copy project
-COPY . /bot/
-# install dependencies
+ADD ./requirements.txt /bot/requirements.txt
 RUN pip install -r ./requirements.txt
-# run appё
+
+ADD . /bot/
 CMD ["python", "app.py"]
