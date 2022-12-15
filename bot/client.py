@@ -32,7 +32,7 @@ class MyRpcClient:
     async def on_response(self, message: AbstractIncomingMessage) -> None:
         """Callback. Действие на возврат ответа message от сервера"""
         if message.correlation_id is None:
-            print(f"Bad message {message!r}")
+            logging.warning(f"Bad message {message!r}")
             return
 
         future: asyncio.Future = self.futures.pop(message.correlation_id)

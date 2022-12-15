@@ -8,6 +8,6 @@ epochs: 5
 
 dataset: [films.csv](https://disk.yandex.ru/d/w7rPLt7Hz3bGYg)
 
-Запрос в виде производится в виде: `Название: <Text>`
+Запрос производится в виде: `Название: <Text>`
 
 [Ноутбук](/training/training.ipynb) с обучением модели.

@@ -40,7 +40,6 @@ class HandlerMessages:
         """Получение ответа от сервера, отправка результата пользователю, сброс состояния"""
         response = await self._sendler.call(message, id)
         answer = json.loads(response.decode("UTF-8"))
-        print("Answer is got")
         await self._dispatcher.bot.send_message(answer['user_id'], answer['text'])
         await state.finish()
 
