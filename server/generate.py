@@ -1,9 +1,9 @@
 import torch
 
-def generateDescription(prompt: str, model, tokenizer) -> str:
+def generateDescription(prompt: str, model, tokenizer, DEVICE) -> str:
     """Генерация описания по названию prompt полученному от бота"""
     text = f"<s>Название: {prompt}\n"
-    input_ids = tokenizer.encode(text, return_tensors="pt")
+    input_ids = tokenizer.encode(text, return_tensors="pt").to(DEVICE)
     model.eval()
     with torch.no_grad():
         out = model.generate(input_ids, 
