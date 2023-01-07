@@ -3,17 +3,18 @@ import torch
 def generateDescription(prompt: str, model, tokenizer, DEVICE) -> str:
     """Генерация описания по названию prompt полученному от бота"""
     text = f"<s>Название: {prompt}\n"
-    input_ids = tokenizer.encode(text, return_tensors="pt").to(DEVICE)
-    model.eval()
-    with torch.no_grad():
-        out = model.generate(input_ids, 
-                            do_sample=True,
-                            num_beams=2,
-                            temperature=1.5,
-                            top_p=0.9,
-                            max_length=512
-                            )
-    generated_text = list(map(tokenizer.decode, out))[0]
-    generated_text = generated_text.replace("<s>", "")
-    generated_text = generated_text.replace("<\s>","")
+    input = tokenizer(text, padding=True, truncation=True, max_length=256, return_tensors="pt")
+    out = model.generate(
+        input['input_ids'], 
+        do_sample=True,
+        temperature=0.8,
+        top_k=30,
+        top_p=0.85,
+        max_length=256,
+        min_length=100,
+        repetition_penalty=1.1,
+        use_cache=True,
+        attention_mask=input['attention_mask']
+    ).cpu()
+    generated_text = tokenizer.batch_decode(out, skip_special_tokens=True)[0]
     return generated_text

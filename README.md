@@ -50,10 +50,8 @@
 
 1. `kubectl apply -f "/manifests/rabbitmq.yaml"`
 
-2. `kubectl apply -f "/manifests/persistent.yaml"`
+2. `kubectl apply -f "/manifests/redis.yaml"`
 
-3. `kubectl apply -f "/manifests/redis.yaml"`
+3. `kubectl apply -f "/manifests/server.yaml"`
 
-4. `kubectl apply -f "/manifests/server.yaml"`
-
-5. `kubectl apply -f "/manifests/bot.yaml"`
+4. `kubectl apply -f "/manifests/bot.yaml"`

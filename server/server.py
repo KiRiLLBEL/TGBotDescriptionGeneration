@@ -17,10 +17,8 @@ tokenizer = AutoTokenizer.from_pretrained("KiRiLLBEl/MovieDescriptionGen", cache
 model = AutoModelForCausalLM.from_pretrained("KiRiLLBEl/MovieDescriptionGen", cache_dir="./model").to(DEVICE)
 
 async def main() -> None:
-    try:
-        connection = await connect(os.environ["AMQP_URL"],)
-    except Exception:
-        logging.exception(" [x] connection not open")
+
+    connection = await connect(os.environ["AMQP_URL"])
 
     channel = await connection.channel()
 
